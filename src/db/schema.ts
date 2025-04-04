@@ -1,8 +1,4 @@
-import { pgTable, serial, text, doublePrecision } from 'drizzle-orm/pg-core';
-
-export const products = pgTable('products', {
-	id: serial('id').primaryKey(),
-	name: text('name'),
-	description: text('description'),
-	price: doublePrecision('price'),
-});
+export * from '@/db/schema/users';
+export * from '@/db/schema/sessions';
+export * from '@/db/schema/taxonomy';
+export * from '@/db/schema/carListings';
