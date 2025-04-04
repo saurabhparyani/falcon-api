@@ -28,6 +28,8 @@ export const distanceUnitEnum = t.pgEnum('distance_unit', ['km', 'miles']);
 
 export const currencyCodeEnum = t.pgEnum('currency', ['INR', 'EUR', 'USD']);
 
+export const statusEnum = t.pgEnum('status', ['live', 'draft', 'sold']);
+
 export const carListings = pgTable(
 	'car_listings',
 	{
@@ -39,7 +41,7 @@ export const carListings = pgTable(
 		description: t.text('description'),
 		year: t.integer().notNull(),
 		totalDistanceTravelled: t.bigint('total_distance_travelled', { mode: 'number' }).default(0).notNull(),
-
+		status: statusEnum().default('live').notNull(),
 		doors: t.integer().default(2).notNull(),
 		seats: t.integer().default(5).notNull(),
 		price: t.integer().default(0).notNull(),

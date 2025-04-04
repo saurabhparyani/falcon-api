@@ -15,6 +15,13 @@
       "when": 1743745340029,
       "tag": "0001_faulty_union_jack",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1743746744989,
+      "tag": "0002_gifted_franklin_storm",
+      "breakpoints": true
     }
   ]
 }
