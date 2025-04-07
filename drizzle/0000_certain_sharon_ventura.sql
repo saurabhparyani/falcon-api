@@ -1,3 +1,11 @@
+CREATE TYPE "public"."body_type" AS ENUM('sedan', 'hatchback', 'suv', 'coupe', 'mpv', 'convertible', 'crossover', 'muv');--> statement-breakpoint
+CREATE TYPE "public"."color" AS ENUM('black', 'blue', 'brown', 'gold', 'green', 'grey', 'orange', 'pink', 'purple', 'red', 'silver', 'white', 'yellow');--> statement-breakpoint
+CREATE TYPE "public"."currency" AS ENUM('INR', 'EUR', 'USD');--> statement-breakpoint
+CREATE TYPE "public"."customer_status" AS ENUM('subscriber', 'interested', 'contacted', 'purchased', 'cold');--> statement-breakpoint
+CREATE TYPE "public"."distance_unit" AS ENUM('km', 'miles');--> statement-breakpoint
+CREATE TYPE "public"."fuel_type" AS ENUM('petrol', 'diesel', 'electric', 'hybrid', 'cng');--> statement-breakpoint
+CREATE TYPE "public"."status" AS ENUM('live', 'draft', 'sold');--> statement-breakpoint
+CREATE TYPE "public"."transmission" AS ENUM('manual', 'automatic', 'amt', 'dct', 'cvt');--> statement-breakpoint
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" varchar(255) NOT NULL,
@@ -38,8 +46,12 @@ CREATE TABLE "variants" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" varchar(255) NOT NULL,
 	"model_id" uuid NOT NULL,
-	"year_start" integer NOT NULL,
-	"year_end" integer NOT NULL,
+	"price" integer NOT NULL,
+	"fuelType" "fuel_type" NOT NULL,
+	"bodyType" "body_type" NOT NULL,
+	"doors" integer NOT NULL,
+	"seats" integer NOT NULL,
+	"transmission" "transmission" NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL
 );
@@ -53,9 +65,16 @@ CREATE TABLE "car_listings" (
 	"description" text,
 	"year" integer NOT NULL,
 	"total_distance_travelled" bigint DEFAULT 0 NOT NULL,
+	"status" "status" DEFAULT 'live' NOT NULL,
 	"doors" integer DEFAULT 2 NOT NULL,
 	"seats" integer DEFAULT 5 NOT NULL,
 	"price" integer DEFAULT 0 NOT NULL,
+	"transmission" "transmission" DEFAULT 'manual' NOT NULL,
+	"color" "color" DEFAULT 'black' NOT NULL,
+	"fuelType" "fuel_type" DEFAULT 'petrol' NOT NULL,
+	"bodyType" "body_type" DEFAULT 'sedan' NOT NULL,
+	"distanceUnit" "distance_unit" DEFAULT 'km' NOT NULL,
+	"currency" "currency" DEFAULT 'INR' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL,
 	"brand_id" uuid NOT NULL,
@@ -76,6 +95,8 @@ CREATE TABLE "page_views" (
 CREATE TABLE "customer_lifecycle" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"customer_id" uuid NOT NULL,
+	"old_status" "customer_status",
+	"new_status" "customer_status",
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL
 );
@@ -112,7 +133,7 @@ ALTER TABLE "customer_lifecycle" ADD CONSTRAINT "customer_lifecycle_customer_id_
 ALTER TABLE "customers" ADD CONSTRAINT "customers_car_listing_id_car_listings_id_fk" FOREIGN KEY ("car_listing_id") REFERENCES "public"."car_listings"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "images" ADD CONSTRAINT "images_car_listing_id_car_listings_id_fk" FOREIGN KEY ("car_listing_id") REFERENCES "public"."car_listings"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE UNIQUE INDEX "idx_model_brand_name" ON "models" USING btree ("brand_id","name");--> statement-breakpoint
-CREATE UNIQUE INDEX "idx_variant_model_year" ON "variants" USING btree ("model_id","name");--> statement-breakpoint
+CREATE UNIQUE INDEX "idx_variant_model_name" ON "variants" USING btree ("model_id","name");--> statement-breakpoint
 CREATE INDEX "idx_car_brand_model" ON "car_listings" USING btree ("brand_id","model_id");--> statement-breakpoint
 CREATE INDEX "idx_car_price" ON "car_listings" USING btree ("price");--> statement-breakpoint
 CREATE INDEX "page_path_viewedat_idx" ON "page_views" USING btree ("path","viewed_at");--> statement-breakpoint

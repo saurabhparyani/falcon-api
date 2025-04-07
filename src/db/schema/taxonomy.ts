@@ -1,5 +1,6 @@
 import { pgTable, uniqueIndex } from 'drizzle-orm/pg-core';
 import * as t from 'drizzle-orm/pg-core';
+import { fuelTypeEnum, bodyTypeEnum, transmissionEnum } from '@/utils/enum-types';
 
 export const brands = pgTable('brands', {
 	id: t.uuid().primaryKey().defaultRandom(),
@@ -33,10 +34,14 @@ export const variants = pgTable(
 			.uuid('model_id')
 			.notNull()
 			.references(() => models.id, { onDelete: 'cascade' }),
-		yearStart: t.integer('year_start').notNull(),
-		yearEnd: t.integer('year_end').notNull(),
+		price: t.integer().notNull(),
+		fuelType: fuelTypeEnum().notNull(),
+		bodyType: bodyTypeEnum().notNull(),
+		doors: t.integer().notNull(),
+		seats: t.integer().notNull(),
+		transmission: transmissionEnum().notNull(),
 		createdAt: t.timestamp('created_at').defaultNow().notNull(),
 		updatedAt: t.timestamp('updated_at').notNull(),
 	},
-	(table) => [uniqueIndex('idx_variant_model_year').on(table.modelId, table.name)]
+	(table) => [uniqueIndex('idx_variant_model_name').on(table.modelId, table.name)]
 );

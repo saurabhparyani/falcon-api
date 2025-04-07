@@ -3,6 +3,9 @@ import { pgEnum } from 'drizzle-orm/pg-core';
 export enum Transmission {
 	MANUAL = 'manual',
 	AUTOMATIC = 'automatic',
+	AMT = 'amt',
+	DCT = 'dct',
+	CVT = 'cvt',
 }
 
 export enum Color {
@@ -26,6 +29,7 @@ export enum FuelType {
 	DIESEL = 'diesel',
 	ELECTRIC = 'electric',
 	HYBRID = 'hybrid',
+	CNG = 'cng',
 }
 
 export enum BodyType {
@@ -33,8 +37,10 @@ export enum BodyType {
 	HATCHBACK = 'hatchback',
 	SUV = 'suv',
 	COUPE = 'coupe',
+	MPV = 'mpv',
 	CONVERTIBLE = 'convertible',
-	WAGON = 'wagon',
+	CROSSOVER = 'crossover',
+	MUV = 'muv',
 }
 
 export enum DistanceUnit {

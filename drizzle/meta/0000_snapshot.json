@@ -1,5 +1,5 @@
 {
-  "id": "eb78ea68-a44c-4295-89d8-348bb53dc5e8",
+  "id": "96d164c9-7969-4330-bec3-90530bc65fa4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -288,15 +288,42 @@
           "primaryKey": false,
           "notNull": true
         },
-        "year_start": {
-          "name": "year_start",
+        "price": {
+          "name": "price",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "year_end": {
-          "name": "year_end",
+        "fuelType": {
+          "name": "fuelType",
+          "type": "fuel_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bodyType": {
+          "name": "bodyType",
+          "type": "body_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doors": {
+          "name": "doors",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "seats": {
+          "name": "seats",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transmission": {
+          "name": "transmission",
+          "type": "transmission",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -315,8 +342,8 @@
         }
       },
       "indexes": {
-        "idx_variant_model_year": {
-          "name": "idx_variant_model_year",
+        "idx_variant_model_name": {
+          "name": "idx_variant_model_name",
           "columns": [
             {
               "expression": "model_id",
@@ -413,6 +440,14 @@
           "notNull": true,
           "default": 0
         },
+        "status": {
+          "name": "status",
+          "type": "status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'live'"
+        },
         "doors": {
           "name": "doors",
           "type": "integer",
@@ -433,6 +468,54 @@
           "primaryKey": false,
           "notNull": true,
           "default": 0
+        },
+        "transmission": {
+          "name": "transmission",
+          "type": "transmission",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'manual'"
+        },
+        "color": {
+          "name": "color",
+          "type": "color",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'black'"
+        },
+        "fuelType": {
+          "name": "fuelType",
+          "type": "fuel_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'petrol'"
+        },
+        "bodyType": {
+          "name": "bodyType",
+          "type": "body_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'sedan'"
+        },
+        "distanceUnit": {
+          "name": "distanceUnit",
+          "type": "distance_unit",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'km'"
+        },
+        "currency": {
+          "name": "currency",
+          "type": "currency",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'INR'"
         },
         "created_at": {
           "name": "created_at",
@@ -649,6 +732,20 @@
           "primaryKey": false,
           "notNull": true
         },
+        "old_status": {
+          "name": "old_status",
+          "type": "customer_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "new_status": {
+          "name": "new_status",
+          "type": "customer_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -857,7 +954,100 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.body_type": {
+      "name": "body_type",
+      "schema": "public",
+      "values": [
+        "sedan",
+        "hatchback",
+        "suv",
+        "coupe",
+        "mpv",
+        "convertible",
+        "crossover",
+        "muv"
+      ]
+    },
+    "public.color": {
+      "name": "color",
+      "schema": "public",
+      "values": [
+        "black",
+        "blue",
+        "brown",
+        "gold",
+        "green",
+        "grey",
+        "orange",
+        "pink",
+        "purple",
+        "red",
+        "silver",
+        "white",
+        "yellow"
+      ]
+    },
+    "public.currency": {
+      "name": "currency",
+      "schema": "public",
+      "values": [
+        "INR",
+        "EUR",
+        "USD"
+      ]
+    },
+    "public.customer_status": {
+      "name": "customer_status",
+      "schema": "public",
+      "values": [
+        "subscriber",
+        "interested",
+        "contacted",
+        "purchased",
+        "cold"
+      ]
+    },
+    "public.distance_unit": {
+      "name": "distance_unit",
+      "schema": "public",
+      "values": [
+        "km",
+        "miles"
+      ]
+    },
+    "public.fuel_type": {
+      "name": "fuel_type",
+      "schema": "public",
+      "values": [
+        "petrol",
+        "diesel",
+        "electric",
+        "hybrid",
+        "cng"
+      ]
+    },
+    "public.status": {
+      "name": "status",
+      "schema": "public",
+      "values": [
+        "live",
+        "draft",
+        "sold"
+      ]
+    },
+    "public.transmission": {
+      "name": "transmission",
+      "schema": "public",
+      "values": [
+        "manual",
+        "automatic",
+        "amt",
+        "dct",
+        "cvt"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "roles": {},
