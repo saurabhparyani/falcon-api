@@ -50,8 +50,6 @@ export enum DistanceUnit {
 
 export enum CurrencyCode {
 	INR = 'INR',
-	EUR = 'EUR',
-	USD = 'USD',
 }
 
 export enum Status {
